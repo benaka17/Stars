@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js" defer></script>
+    <link rel="shortcut icon" href="Stars.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+    <style>
+        .star {
+            transition: transform 0.3s, box-shadow 0.5s ease-out;
+        }
+
+        /* Shooting Star Styles */
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(45deg, rgb(173, 1, 1), rgba(80, 5, 5, 0));
+            opacity: 0.8;
+            transform: rotate(-45deg);
+            animation: shooting-star 5s linear infinite;
+        }
+
+        @keyframes shooting-star {
+            0% {
+                transform: translateX(-100vw) translateY(-100vh) rotate(-45deg);
+                opacity: 0.8;
+            }
+            70% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateX(100vw) translateY(100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const starContainer = document.getElementById('star-container');
+            const poemContainer = document.getElementById('poem-container');
+
+            const poems = [
+                "You have a way of turning the simplest days into something magical.",
+                "You bring joy into my life every day.",
+                "I love you more than you could ever know.",
+                "I'm the luckiest person in the world because I have you.",
+                "The day I met you I forgot a life without you.",
+                "Wherever I see beauty, I see parts of you.",
+                "I may be the poet, but you are always the poem.",
+                "I love stargazing. Luckily your eyes sparkle like the stars.",
+                "When my arms can't carry you, my heart always will instead.",
+                "You're my last thought every evening and my first thought every morning.",
+                "I used to hate how deeply I feel, but I love how deeply I feel about you.",
+                "I will always be right by your side, simply because I find you to be perfect.",
+                "If you could see yourself through my eyes you would never be insecure.",
+                "I say I want to give you the world because you already gave it to me by being my girlfriend.",
+                "I'm all in because you're all I need.",
+                "I love how our collection of memories keeps growing.",
+                "Each step we take brings us closer to our future together.",
+                "My love for you feels limitless, so don't ever worry about me getting tired of loving you.",
+                "You might think you're not doing enough, yet just your presence does more to me than anything else.",
+                "We close the distance to then go back. I can't wait for the day we permanently close it.",
+                "From the moment we say goodbye, I miss you like the stars miss the sun in the morning sky. But you shine brighter than the stars.",
+                "I would give you the sun, even if it meant that I stay in the dark.",
+                "You made me fall in love with you, with myself and with life.",
+                "With you I'm at peace.",
+                "I could fill oceans with the love I have for you.",
+                "If I had a flower for every time I thought of you, I could walk through my garden forever.",
+                "Your hug is my favorite place. It feels like my home.",
+                "If I were to go back and meet my childhood self, I would tell him about you and how excited he should be to meet you.",
+                "You are the reason why everyone around me sees me in love.",
+                "Magic is real and it's the sparkle in your eyes when you laugh.",
+                "Even on your worst days you're the most beautiful girl to me.",
+                "You light up my days even in the darkest of nights.",
+                "Not seeing you every day is hard, but not having you in my life would be much worse.",
+                "You're like a playlist full of my favorite songs. Each word you say is a melody to my ears.",
+                "I want to know every little thing about you. I find you so interesting. And I want to love you from every possible angle.",
+                "I dream of coming home and finding you there.",
+                "Falling in love with you is like hearing the birds chirping at a peaceful morning.",
+                "Falling in love with you is like watching the sunset paint the sky in colors you never knew existed.",
+                "Inside is a thought of beauty. Outside is a form of beauty. You are both.",
+                "I hope you know I go to bed thinking of you and wake up thinking of you.",
+                "You have the sweetest soul I've ever seen.",
+                "The only feeling stronger than my love for you is the ache that comes with missing you."
+            ];
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            const shuffledPoems = shuffleArray(poems.slice());
+
+            // Declare variables to hold timeout references
+            let poemTimeout;
+            let resetStarTimeout;
+
+            function createStar(index) {
+                const star = document.createElement('div');
+                star.classList.add('star', 'absolute', 'bg-white', 'rounded-full');
+
+                const size = Math.random() * 3 + 4;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.top = `${posY}%`;
+                star.style.left = `${posX}%`;
+
+                star.addEventListener('click', () => {
+                    // Clear existing timeouts
+                    clearTimeout(poemTimeout);
+                    clearTimeout(resetStarTimeout);
+
+                    // Highlight the star
+                    star.style.boxShadow = "0 0 20px 10px rgba(122, 9, 72, 0.8)";
+                    star.style.transform = "scale(1.5)";
+
+                    // Display the corresponding poem
+                    const poemToDisplay = shuffledPoems[index];
+                    poemContainer.innerText = poemToDisplay;
+                    poemContainer.classList.remove('opacity-0');
+                    poemContainer.classList.add('opacity-100');
+
+                    // Set timeout to hide the poem after 8888ms
+                    poemTimeout = setTimeout(() => {
+                        poemContainer.classList.remove('opacity-100');
+                        poemContainer.classList.add('opacity-0');
+                    }, 8888);
+
+                    // Reset the star appearance after 2222ms
+                    resetStarTimeout = setTimeout(() => {
+                        star.style.boxShadow = "0 0 20px 10px rgba(255, 215, 0, 0)";
+                        star.style.transform = "scale(1)";
+                    }, 2222);
+                });
+
+                starContainer.appendChild(star);
+            }
+
+            for (let i = 0; i < shuffledPoems.length; i++) {
+                createStar(i);
+            }
+
+            // Function to create a shooting star
+            function createShootingStar() {
+                const shootingStar = document.createElement('div');
+                shootingStar.classList.add('shooting-star');
+
+                const startX = -100;
+                const startY = Math.random() * window.innerHeight * 0.3;
+
+                shootingStar.style.top = `${startY}px`;
+                shootingStar.style.left = `${startX}px`;
+
+                document.body.appendChild(shootingStar);
+
+                // Remove the shooting star after 5 seconds to avoid memory leak
+                setTimeout(() => {
+                    shootingStar.remove();
+                }, 5000);
+            }
+
+            // Create a shooting star every 10 seconds
+            setInterval(createShootingStar, 10000);
+        });
+    </script>
+</head>
+
+<body class="flex flex-col bg-black justify-center items-center">
+
+    <section class="flex flex-col gap-y-4 text-center w-screen text-white bg-gradient-to-b from-slate-700 to-black p-4">
+        <h1 class="text-3xl text-pink-600" style='font-family: "Lora", serif;'>To My Beautiful Girl</h1>
+        <h2 class="text-xl text-pink-600" style='font-family: "Lora", serif;'>Dear Sophia</h2>
+        <p class="text-pink-600" style='font-family: "Lora", serif;'>
+            Time Is Flying And It's Already Our 3 Month.
+            <br>
+            <br>
+            I Want To Take This Opportunity To Share Words Of Love With You.
+            <br>
+            <br>
+            You Shine Brighter Than The Stars.
+            <br>
+            But The Stars Watch And Capture All Of Our Memories That We Collect Along The Way.
+        </p>
+    </section>
+
+    <section class="relative h-screen w-screen">
+        <div id="star-container" class="relative w-full h-full"></div>
+    </section>
+
+    <div id="poem-container" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-800 text-white p-4 rounded-lg opacity-0 transition-opacity duration-300 text-center"></div>
+
+    <section class="flex flex-col gap-y-4 text-center w-screen text-white bg-gradient-to-b from-black to-slate-700 p-4">
+        <h2 class="text-xl text-pink-600" style='font-family: "Lora", serif;'>
+            Like The Constellation Of The Stars, I Believe That We Are Interlinked.
+            <br>
+            <br>
+            I Can't Wait To Make More Memories With You My Princess.
+        </h2>
+        <h1 class="text-3xl text-pink-600" style='font-family: "La Belle Aurore", cursive;'>With Love, Your Alexander </h1>
+    </section>
+
+</body>
+
+</html>
